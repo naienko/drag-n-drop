@@ -5,44 +5,43 @@
 // The user should be able to move a card from the top/bottom box back to the middle.
 
 const DragDropManager = Object.create(null, {
-    init: {
-      value: () => {
-        const stages = document.querySelectorAll(".stage")
-  
-        stages.forEach(stage => {
-          // Gain reference of item being dragged
-          stage.ondragstart = e => {
-            e.dataTransfer.setData("text", e.target.classList)
-          }
-        })
-  
-  
-        const targets = document.querySelectorAll(".target")
-  
-        targets.forEach(target => {
-          // Dragover not supported by default. Turn that off.
-          target.ondragover = e => e.preventDefault()
-  
-          target.ondrop = e => {
-            // Enabled dropping on targets
-            e.preventDefault()
-  
-            // Determine what's being dropped
-            const data = e.dataTransfer.getData("text")
-  
-            // Append card to target component as child
-            // TODO: This should only happen if the target has no children nodes
-            // if (target.innerHTML === "") {
-            //     e.target.appendChild(document.querySelector(`.${data.split(" ")[1]}`))
-            // }
-            if (!target.hasChildNodes()) {
-                e.target.appendChild(document.querySelector(`.${data.split(" ")[1]}`))
-            }
-          }
-        })
-      }
+  init: {
+    value: () => {
+      const stages = document.querySelectorAll(".stage");
+
+      stages.forEach(stage => {
+        // Gain reference of item being dragged
+        stage.ondragstart = e => {
+          e.dataTransfer.setData("text", e.target.classList);
+        };
+      });
+
+      const targets = document.querySelectorAll(".target");
+
+      targets.forEach(target => {
+        // Dragover not supported by default. Turn that off.
+        target.ondragover = e => e.preventDefault();
+
+        target.ondrop = e => {
+          // Enabled dropping on targets
+          e.preventDefault();
+
+          // Determine what's being dropped
+          const data = e.dataTransfer.getData("text");
+
+          // Append card to target component as child
+          // TODO: This should only happen if the target has no children nodes
+          if (!target.hasChildNodes()) {
+            e.target.appendChild(document.querySelector(`.${data.split(" ")[1]}`));
+          } else if (target.classList.contains("origin")) {
+            // e.target.after(document.querySelector(`.${data.split(" ")[1]}`));
+
+            e.target.parentNode.insertBefore(document.querySelector(`.${data.split(" ")[1]}`), e.target.nextSibling);
+          } 
+        };
+      });
     }
-  })
-  
-  DragDropManager.init()
-  
+  }
+});
+
+DragDropManager.init();
