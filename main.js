@@ -32,7 +32,12 @@ const DragDropManager = Object.create(null, {
   
             // Append card to target component as child
             // TODO: This should only happen if the target has no children nodes
-            e.target.appendChild(document.querySelector(`.${data.split(" ")[1]}`))
+            // if (target.innerHTML === "") {
+            //     e.target.appendChild(document.querySelector(`.${data.split(" ")[1]}`))
+            // }
+            if (!target.hasChildNodes()) {
+                e.target.appendChild(document.querySelector(`.${data.split(" ")[1]}`))
+            }
           }
         })
       }
